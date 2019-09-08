@@ -1,0 +1,75 @@
+<!--
+ * @Autor: ErioY
+ * @Date: 2019-09-05 18:11:41
+ * @Email: 1973545559@qq.com
+ * @Github: https://github.com/ErioY
+ * @LastEditors: ErioY
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>批量删除</title>
+    <style>
+    li {
+        cursor: pointer;
+    }
+    li:hover {
+        font-size: 2em;
+    }
+    
+    </style>
+</head>
+<body>
+    <input type="text">
+    <button>发送</button>
+    <button>批量删除</button>
+    <ul></ul>
+    <script>
+    /*  布局一个输入框和两个按钮，分别是“发送”和“批量删除”，需要实现的功能如下：
+     *  （1） 每点击一次“发送”，即可添加一个li元素，li元素的内容即输入框的内容，从上面开始添加，但最多只能有五个li元素
+     *  如果已存在5个li元素，再点“发送”时，第6个li会使第1个li被删除，以此类推
+     *  （2） 当点击li元素时，对应元素背景颜色变黄，点击“批量删除”时，背景颜色为黄色的li元素都被删除
+    */
+    var oInput = document.querySelectorAll("input")[0];
+    var aBtn = document.querySelectorAll("button");
+    var oUl = document.querySelectorAll("ul")[0];
+    // 统计添加了多少个li
+    var i = 0;
+    // 点击“发送”时
+    aBtn[0].onclick = function() {
+        var oLi = document.createElement("li");
+        oLi.innerHTML = oInput.value;
+        // 从上面开始添加li
+        oUl.insertBefore(oLi,oUl.childNodes[0]);
+        // 添加完毕后清除input框里的值
+        oInput.value = "";
+        i++;
+        // 保证只有5个li元素，也就是把最先添加的li元素删除
+        if (i > 5) {
+            oUl.lastChild.remove();
+        }
+        console.log(i);
+        // 点击li元素时
+        oLi.onclick = function() {
+            oLi.style.background = "yellow";
+            // 添加类名，存在该类名的时候删除
+            oLi.classList.toggle("deleteLi");
+        }
+        // 获取所有存在deleteLi类名的li元素
+        var aLi = document.getElementsByClassName("deleteLi");
+        // 点击“批量删除”时
+        aBtn[1].onclick = function() {
+            // 从后往前删除所有符合条件的li元素
+            for (var j = aLi.length-1; j >= 0; j--) {
+                oUl.removeChild(aLi[j]);
+            }
+            i = document.querySelectorAll("li").length;
+            console.log(i);
+        }
+    }
+    </script>
+</body>
+</html>
